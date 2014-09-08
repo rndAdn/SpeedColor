@@ -1,27 +1,61 @@
 package com.speedColor.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.speedColor.screen.*;
 
-public class Main extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-	}
+public class Main extends Game {
 
-	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
-	}
+    private MenuScreen menu;
+    private PlayScreen jouer;
+    private PauseScreen pause;
+    private OptionScreen option;
+
+    @Override
+    public void create() {
+        setMenu(new MenuScreen(this));
+        setJouer(new PlayScreen(this));
+        setPause(new PauseScreen(this));
+        setOption(new OptionScreen(this));
+
+        this.menu = new MenuScreen(this);
+
+        Gdx.input.setCatchBackKey(true);
+        setScreen(this.jouer);
+    }
+
+
+    public MenuScreen getMenu() {
+        return menu;
+    }
+
+    public void setMenu(MenuScreen menu) {
+        this.menu = menu;
+    }
+
+    public PlayScreen getJouer() {
+        return jouer;
+    }
+
+    public void setJouer(PlayScreen jouer) {
+        this.jouer = jouer;
+    }
+
+    public PauseScreen getPause() {
+        return pause;
+    }
+
+    public void setPause(PauseScreen pause) {
+        this.pause = pause;
+    }
+
+    public OptionScreen getOption() {
+        return option;
+    }
+
+    public void setOption(OptionScreen option) {
+        this.option = option;
+    }
+
+
 }
