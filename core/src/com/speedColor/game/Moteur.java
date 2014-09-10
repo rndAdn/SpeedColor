@@ -3,6 +3,7 @@ package com.speedColor.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.LinkedList;
 import java.util.Vector;
 
 /**
@@ -24,8 +25,8 @@ public class Moteur {
 
     }
 
-    public static float popTime(int size, int vitesse){
+    public static boolean popTime(LinkedList<Cube> l, int vitesse){
 
-        return (size+10)/ (float)vitesse;
+        return l.getLast().position.x > 50 + l.getLast().position.getWidth()+10;
     }
 }
