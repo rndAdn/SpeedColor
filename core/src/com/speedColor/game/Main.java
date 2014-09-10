@@ -14,9 +14,6 @@ public class Main extends Game {
     @Override
     public void create() {
         setMenu(new MenuScreen(this));
-        setJouer(new PlayScreen(this));
-        setPause(new PauseScreen(this));
-        setOption(new OptionScreen(this));
 
         this.menu = new MenuScreen(this);
 
