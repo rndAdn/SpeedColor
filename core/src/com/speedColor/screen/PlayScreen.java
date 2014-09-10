@@ -13,7 +13,6 @@ import com.speedColor.game.Config;
 import com.speedColor.game.Cube;
 import com.speedColor.game.Moteur;
 import java.util.LinkedList;
-import java.util.concurrent.ScheduledExecutorService;
 
 
 public class PlayScreen implements Screen {
@@ -111,19 +110,15 @@ public class PlayScreen implements Screen {
                            return true;
                        }
                        if(liste.peekFirst().color.equals(c.color)){
-                            //System.out.println("Y :"+liste.peekFirst().color);
                             liste.removeFirst();
                             caseDetruits++;
                             vie++;
                            if (vie>100) vie = 100;
                        }
                        else{
-                            //System.out.println("N :"+ liste.peekFirst().color);
                             vie-=25;
                         }
 
-                    }
-                    else {
                     }
                 }
 
@@ -157,7 +152,7 @@ public class PlayScreen implements Screen {
             curtime=0;
         }
         update(delta);
-        popSec = Moteur.popTime(liste,vitesse);
+        popSec = Moteur.popTime(liste);
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0.128f, 0.128f, 0.255f, 1);
@@ -205,7 +200,6 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float delta){
-        //System.out.println(liste.size());
         if (vie<=0) lose = true;
         for (Cube c : liste){
             c.update(vitesse, delta);

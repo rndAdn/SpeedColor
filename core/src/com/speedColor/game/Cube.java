@@ -10,13 +10,12 @@ import java.util.Random;
 
 public class Cube {
 
-    public static int speed;
     public Rectangle position;
     public Texture texture;
     public Color color;
     static Random rand = new Random(System.currentTimeMillis());
 
-    public Cube (){ // random color
+    public Cube (){
         position = new Rectangle();
         position.x = 50;
         position.y = Gdx.app.getGraphics().getHeight()-175;

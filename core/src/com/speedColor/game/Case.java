@@ -18,7 +18,6 @@ public class Case {
     public Color color;
     public Texture texture;
     public Rectangle position;
-    public boolean istouch = false;
 
     public Case(Color color, int w, int h){
         position = new Rectangle();
