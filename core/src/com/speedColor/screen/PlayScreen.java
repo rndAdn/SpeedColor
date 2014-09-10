@@ -191,15 +191,8 @@ public class PlayScreen implements Screen {
         }
         if(liste.size()>0){
             if(liste.peekFirst().getX()+liste.peekFirst().getWidth()>=Gdx.graphics.getWidth()){
-                //System.out.println("LOSE");
-
-                Cube b = liste.peekFirst();
-
-
-                liste.removeFirst();
-                b.remove();
-
-                //lose= true;
+                
+                lose= true;
             }
         }
 
