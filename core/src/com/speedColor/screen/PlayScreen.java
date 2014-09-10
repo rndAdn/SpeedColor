@@ -1,21 +1,27 @@
 package com.speedColor.screen;
 
-import com.badlogic.gdx.*;
+
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Timer;
 import com.speedColor.game.Case;
 import com.speedColor.game.Config;
 import com.speedColor.game.Cube;
-import com.speedColor.game.Moteur;
+
 import java.util.LinkedList;
 
-
 public class PlayScreen implements Screen {
+
+    public Stage stage;
 
     private BitmapFont font;
     private SpriteBatch batch;
@@ -33,32 +39,41 @@ public class PlayScreen implements Screen {
     private int margeV =200;
     public Game g;
 
-    private int vitesse = 20;
+    private float vitesse = 15;
     private boolean popSec = false;
     private float oldPopSec = 0;
     float curtime = 0;
 
 
+    public PlayScreen(Game container) {
 
+        //Stage
+        stage = new Stage();
+        liste = new LinkedList<Cube>();
 
-    public PlayScreen(Game container){
-
-        lose = false;
-        this.g = container;
+        //font
         font = new BitmapFont();
         font.setColor(Color.BLACK);
         font.setScale(3,3);
+
+        //batch
         batch = new SpriteBatch();
+
+
+        lose = false;
+        this.g = container;
+
         liste = new LinkedList<Cube>();
-        liste.addFirst(new Cube());
         t = new Timer();
 
         t.scheduleTask(new com.badlogic.gdx.utils.Timer.Task() {
             @Override
             public void run() {
-                vitesse += 10;
+                System.out.println("Speed :"+vitesse);
+                vitesse -= 0.4f;
+                update(vitesse);
             }
-        }, 0, 5);
+        }, 5, 5);
 
 
         int w = Gdx.app.getGraphics().getWidth() - margeH;
@@ -69,7 +84,7 @@ public class PlayScreen implements Screen {
         this.top = new Texture(pix);
 
         pix = new Pixmap(margeH, Gdx.graphics.getHeight(), Pixmap.Format.RGB888);
-        pix.setColor(Color.NAVY);
+        pix.setColor(new Color(80/255f,174/255f,221/255f,1f));
         pix.fillRectangle(0, 0, pix.getWidth(), pix.getHeight());
         this.left = new Texture(pix);
 
@@ -104,18 +119,24 @@ public class PlayScreen implements Screen {
                 y = Gdx.graphics.getHeight()-y;
 
                 for(Case c : caseColor){
-                   if(c.position.contains(x,y)){
-                       if(liste.size()==0){
-                           vie-=25;
-                           return true;
-                       }
-                       if(liste.peekFirst().color.equals(c.color)){
+                    if(c.position.contains(x,y)){
+                        if(liste.size()==0){
+                            vie-=25;
+                            return true;
+                        }
+                        if(liste.peekFirst().color.equals(c.color)){
+                            Cube b = liste.peekFirst();
+
+
                             liste.removeFirst();
+                            b.remove();
+
+
                             caseDetruits++;
                             vie++;
-                           if (vie>100) vie = 100;
-                       }
-                       else{
+                            if (vie>100) vie = 100;
+                        }
+                        else{
                             vie-=25;
                         }
 
@@ -135,44 +156,72 @@ public class PlayScreen implements Screen {
 
 
 
+
+
+
+
+    }
+
+
+    public void update(float vitesse){
+
+        for (Cube c : liste){
+            c.action.setDuration(vitesse);
+        }
+
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        if (vie<=0) lose = true;
         if (lose){
             LoseScreen ls = new LoseScreen(this.g);
             ls.detruite = this.caseDetruits;
             ((Game)Gdx.app.getApplicationListener()).setScreen(ls);
         }
-        if (liste.size()==0) liste.addLast(new Cube());
-        else if(popSec){
-            liste.addLast(new Cube());
-            popSec = false;
-            curtime=0;
+        if (liste.size()==0){
+            liste.addLast(new Cube(vitesse));
+            stage.addActor(liste.getLast());
         }
-        update(delta);
-        popSec = Moteur.popTime(liste);
+        else if(liste.peekLast().getX()-75 > liste.peekFirst().getWidth()+20){
+            liste.addLast(new Cube(vitesse));
+            stage.addActor(liste.getLast());
+        }
+        if(liste.size()>0){
+            if(liste.peekFirst().getX()+liste.peekFirst().getWidth()>=Gdx.graphics.getWidth()){
+                //System.out.println("LOSE");
 
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(0.128f, 0.128f, 0.255f, 1);
+                Cube b = liste.peekFirst();
+
+
+                liste.removeFirst();
+                b.remove();
+
+                //lose= true;
+            }
+        }
+
+
+        batch.begin();
+        batch.draw(top, margeH,Gdx.app.getGraphics().getHeight()-(top.getHeight()), top.getWidth(),top.getHeight());
+        batch.end();
+
+
+        stage.act(delta);
+        stage.draw();
+
         batch.begin();
 
 
-        batch.draw(top, margeH,Gdx.app.getGraphics().getHeight()-(top.getHeight()), top.getWidth(),top.getHeight());
+
 
 
 
         for (Case c : caseColor){
             batch.draw(c.texture, c.position.x, c.position.y, c.position.width, c.position.height);
         }
-        for (Cube c : liste){
-            batch.draw(c.texture, c.position.x, c.position.y, c.position.width, c.position.height);
-        }
-        curtime+= delta;
-
-
-
         batch.draw(left, 0,0, left.getWidth(),left.getHeight());
         if(vie>50){
             font.setColor(Color.GREEN);
@@ -195,19 +244,8 @@ public class PlayScreen implements Screen {
 
 
 
-
-
     }
 
-    public void update(float delta){
-        if (vie<=0) lose = true;
-        for (Cube c : liste){
-            c.update(vitesse, delta);
-        }
-        if(liste.size()>0){
-            if(liste.peekFirst().position.x+liste.peekFirst().position.getWidth()>Gdx.graphics.getWidth()) lose = true;
-        }
-    }
 
     @Override
     public void resize(int width, int height) {
@@ -237,9 +275,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-        batch.dispose();
-        font.dispose();
-        liste=null;
+
     }
 
 }

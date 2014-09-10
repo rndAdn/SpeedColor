@@ -7,5 +7,5 @@ import com.badlogic.gdx.graphics.Color;
  */
 public class Config {
 
-    public static Color listeColor[] = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW};
+    public static Color listeColor[] = {new Color(37/255f,140/255f,28/255f,1f),Color.RED, Color.YELLOW, Color.BLUE};
 }
