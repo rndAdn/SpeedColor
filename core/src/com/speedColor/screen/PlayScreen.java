@@ -47,11 +47,12 @@ public class PlayScreen implements Screen {
     public static int margeV =Gdx.graphics.getHeight()/5;
     public Game g;
 
-    private float vitesse = 12f;
+    public static float vitesse = 12f;
     float speedTime = 6f;
     float speedUp = 0.7f;
 
     public Bombe bombe;
+    public Freeze freeze;
     public Vie vieAct;
 
     public PlayScreen(Game container) {
@@ -59,6 +60,7 @@ public class PlayScreen implements Screen {
 
 
         bombe = new Bombe();
+        freeze = new Freeze();
         vieAct = new Vie();
 
 
@@ -68,6 +70,9 @@ public class PlayScreen implements Screen {
 
         bombe.setTouchable(Touchable.enabled);
         stage.addActor(bombe);
+
+        freeze.setTouchable(Touchable.enabled);
+        stage.addActor(freeze);
         stage.addActor(vieAct);
         liste = new LinkedList<Cube>();
 
@@ -194,7 +199,7 @@ public class PlayScreen implements Screen {
 
 
     }
-    public void updateSpeed(float vitesse){
+    public static void updateSpeed(float vitesse){
 
         for (Cube c : liste){
             c.updateCube(vitesse);

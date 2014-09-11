@@ -39,8 +39,11 @@ public class Case extends Actor{
                     PlayScreen.caseDetruits++;
                     PlayScreen.vie++;
                     PlayScreen.serie++;
-                    if (PlayScreen.serie%100 == 0){
+                    if (PlayScreen.serie%50 == 0){
                         Bombe.nombre++;
+                    }
+                    if (PlayScreen.serie%100 == 0){
+                        Freeze.nombre++;
                     }
                 }
                 else{

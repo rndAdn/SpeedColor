@@ -19,8 +19,8 @@ public class Vie extends Actor{
         this.textureO = new Texture(Gdx.files.internal("data/Oheart.png"));
 
         setX(10);
-        setY(70);
-        setBounds(getX(),getY(), 50, 50);
+        setY(200);
+        setBounds(getX(),getY(), 75, 75);
 
 
     }
@@ -30,11 +30,11 @@ public class Vie extends Actor{
     public void draw(Batch batch, float alpha){
 
         if (PlayScreen.vie>50)
-            batch.draw(textureG, getX(), getY(),50, 50);
+            batch.draw(textureG, getX(), getY(),75, 75);
         else if (PlayScreen.vie>25)
-            batch.draw(textureO, getX(), getY(),50, 50);
+            batch.draw(textureO, getX(), getY(),75, 75);
         else
-            batch.draw(textureR, getX(), getY(),50, 50);
+            batch.draw(textureR, getX(), getY(),75, 75);
     }
 
     @Override
