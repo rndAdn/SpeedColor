@@ -15,10 +15,7 @@ import java.util.LinkedList;
 public class Bombe extends Actor{
 
     public Texture texture;
-    public int nombre = 1;
-
-    public static int X = -75;
-    public static int Y = Gdx.graphics.getHeight()-((PlayScreen.margeV*2/3)+(PlayScreen.margeV*1/6));
+    public static int nombre = 1;
 
 
     BitmapFont font;
@@ -31,7 +28,6 @@ public class Bombe extends Actor{
     public Bombe(){
 
         font = new BitmapFont();
-
 
 
         this.texture = new Texture(Gdx.files.internal("data/Bomb.png"));

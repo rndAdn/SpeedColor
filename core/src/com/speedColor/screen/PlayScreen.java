@@ -19,10 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Timer;
-import com.speedColor.game.Bombe;
-import com.speedColor.game.Case;
-import com.speedColor.game.Config;
-import com.speedColor.game.Cube;
+import com.speedColor.game.*;
 
 import java.sql.Time;
 import java.util.LinkedList;
@@ -55,12 +52,14 @@ public class PlayScreen implements Screen {
     float speedUp = 0.7f;
 
     public Bombe bombe;
+    public Vie vieAct;
 
     public PlayScreen(Game container) {
 
 
 
         bombe = new Bombe();
+        vieAct = new Vie();
 
 
 
@@ -69,6 +68,7 @@ public class PlayScreen implements Screen {
 
         bombe.setTouchable(Touchable.enabled);
         stage.addActor(bombe);
+        stage.addActor(vieAct);
         liste = new LinkedList<Cube>();
 
         //font
@@ -149,30 +149,6 @@ public class PlayScreen implements Screen {
 
         stage.draw();
         update();
-        /*batch.begin();
-
-
-
-        //batch.draw(left, 0,0, left.getWidth(),left.getHeight());
-        if(vie>50){
-            font.setColor(Color.GREEN);
-        }
-        else if(vie>25){
-            font.setColor(Color.ORANGE);
-        }
-        else{
-            font.setColor(Color.RED);
-        }
-
-        font.draw(batch, ""+vie, 20, 200);
-
-        font.setColor(Color.BLACK);
-        font.draw(batch, ""+caseDetruits, 20, 400);
-
-        font.draw(batch, "" + serie, 20, 50);
-
-        batch.end();
-        */
 
     }
 
@@ -234,6 +210,8 @@ public class PlayScreen implements Screen {
 
     public void update(){
 
+
+
         if (vie>100) vie = 100;
 
         if (vie<=0){
@@ -249,7 +227,7 @@ public class PlayScreen implements Screen {
         }
 
         // SI la pile est vide ou si j'ai de la place
-        if (liste.size()==0 || liste.peekLast().getX()-75 > liste.peekFirst().getWidth()+20){
+        if (liste.size()==0 || liste.peekLast().getX()> -75 + margeV*2/3 + 20){
             addCube();
         }
 
