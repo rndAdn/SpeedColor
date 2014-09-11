@@ -45,7 +45,9 @@ public class PlayScreen implements Screen {
     private int margeV =200;
     public Game g;
 
-    private float vitesse = 15f;
+    private float vitesse = 12f;
+    float speedTime = 6f;
+    float speedUp = 0.7f;
 
     public PlayScreen(Game container) {
 
@@ -74,12 +76,12 @@ public class PlayScreen implements Screen {
 
         t = new Timer();
 
-        float speedTime = 1f;
+
         t.scheduleTask(new com.badlogic.gdx.utils.Timer.Task() {
             @Override
             public void run() {
 
-                vitesse -= 1.0f;
+                vitesse -= speedUp;
                 if(vitesse < 1.5f){
                     vitesse = 1.5f;
                 }
@@ -176,9 +178,9 @@ public class PlayScreen implements Screen {
         batch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
-        if (liste.size() >1)
+        /*if (liste.size() >1)
             System.out.println("A :"+(liste.getFirst().getX()-liste.get(1).getX()-liste.get(1).getWidth()));
-
+        */
         stage.draw();
 
         //if (liste.size() >1)
@@ -251,9 +253,7 @@ public class PlayScreen implements Screen {
     public void updateSpeed(float vitesse){
 
         for (Cube c : liste){
-            c.action.setDuration(vitesse);
-
-
+            c.updateCube(vitesse);
         }
 
     }
@@ -290,11 +290,11 @@ public class PlayScreen implements Screen {
         }
 
         // FIN JEU
-        /*if (lose){
+        if (lose){
             LoseScreen ls = new LoseScreen(this.g);
             ls.detruite = this.caseDetruits;
             ((Game)Gdx.app.getApplicationListener()).setScreen(ls);
-        }*/
+        }
     }
 
 

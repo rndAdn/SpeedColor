@@ -15,8 +15,12 @@ public class Cube extends Actor {
     public MoveToAction action = new MoveToAction();
     static Random rand = new Random(System.currentTimeMillis());
 
+    float vitesse;
+
 
     public Cube(float vitesse){
+
+        this.vitesse = vitesse;
 
         int col = rand.nextInt(4);
 
@@ -36,7 +40,7 @@ public class Cube extends Actor {
         // Action
         action.setPosition(Gdx.graphics.getWidth()-this.getWidth(), Gdx.graphics.getHeight()-texture.getHeight());
         action.setDuration(vitesse);
-        //action.setInterpolation(Interpolation.elasticOut);
+
         this.addAction(action);
     }
 
@@ -50,6 +54,15 @@ public class Cube extends Actor {
     @Override
     public void act(float delta){
         super.act(delta);
-        //this.setPosition(this.getX(), this.getY());
+    }
+
+    public void updateCube(float vitesse){
+        this.vitesse = vitesse;
+        float time = (this.action.getTime() * vitesse) / this.action.getDuration();
+        System.out.println(time);
+        setX(75);
+        action.setDuration(vitesse);
+        action.restart();
+        action.setTime(time);
     }
 }
