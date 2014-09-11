@@ -4,26 +4,59 @@ package com.speedColor.game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
-public class Case{
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.speedColor.screen.PlayScreen;
+
+public class Case extends Actor{
 
     public Color color;
     public Texture texture;
-    public Rectangle position;
-    public boolean istouch = false;
 
-    public Case(Color color, int w, int h){
-        position = new Rectangle();
-        position.width = w;
-        position.height = h;
+    public Case(Color color, int w, int h, int x, int y){
 
 
 
         this.color = color;
-        Pixmap pix = new Pixmap(300, 200, Pixmap.Format.RGB888);
-        pix.setColor(color);
+        Pixmap pix = new Pixmap(w, h, Pixmap.Format.RGB888);
+        pix.setColor(new Color(0,0,0,1));
         pix.fillRectangle(0, 0, pix.getWidth(), pix.getHeight());
+        pix.setColor(color);
+        pix.fillRectangle(1, 1, pix.getWidth()-2, pix.getHeight()-2);
         this.texture = new Texture(pix);
+        setX(x);
+        setY(y);
+        setBounds(x,y,texture.getWidth(), texture.getHeight());
+
+        addListener(new InputListener() {
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                if(PlayScreen.liste.peekFirst().color.equals(((Case)event.getTarget()).color)){
+                    Cube b = PlayScreen.liste.peekFirst();
+                    PlayScreen.liste.removeFirst();
+                    b.remove();
+                    PlayScreen.caseDetruits++;
+                    PlayScreen.vie++;
+                    PlayScreen.serie++;
+                }
+                else{
+                    PlayScreen.fail();
+                }
+                return true;
+            }
+        });
+    }
+    @Override
+    public void draw(Batch batch, float alpha){
+
+        batch.draw(texture, getX(), getY(),getWidth(), getHeight());
+
+    }
+
+    @Override
+    public void act(float delta){
+        super.act(delta);
     }
 
 

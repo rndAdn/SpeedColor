@@ -35,6 +35,7 @@ public class LoseScreen implements Screen {
     private BitmapFont font;
 
     public static int detruite;
+    public static int serie;
 
     public LoseScreen(Game container){
 
@@ -62,6 +63,7 @@ public class LoseScreen implements Screen {
         batch.begin();
         font.draw(batch, "YOU LOSE!!!", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()-20);
         font.draw(batch, "Case détruites : " + detruite, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()-50);
+        font.draw(batch, "Serie : " + serie, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()-80);
 
         batch.end();
     }
