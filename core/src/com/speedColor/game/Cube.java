@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import java.util.Random;
 
 public class Cube extends Actor {
-    Texture texture;
+    public Texture texture;
     public Color color;
     public MoveToAction action = new MoveToAction();
     static Random rand = new Random(System.currentTimeMillis());
@@ -26,24 +26,30 @@ public class Cube extends Actor {
         pix.setColor(color);
         pix.fillRectangle(0, 0, pix.getWidth(), pix.getHeight());
         this.texture = new Texture(pix);
-        setBounds(0, Gdx.graphics.getHeight()-texture.getHeight(), texture.getWidth(), texture.getHeight());
+
         setX(75);
+        setY(Gdx.graphics.getHeight()-texture.getHeight());
+        setBounds(getX(),getY(), texture.getWidth(), texture.getHeight());
+
 
 
         // Action
         action.setPosition(Gdx.graphics.getWidth()-this.getWidth(), Gdx.graphics.getHeight()-texture.getHeight());
         action.setDuration(vitesse);
+        //action.setInterpolation(Interpolation.elasticOut);
         this.addAction(action);
     }
 
 
     @Override
     public void draw(Batch batch, float alpha){
-        batch.draw(texture,this.getX(),this.getY());
+        //batch.draw(texture,this.getX(),this.getY());
+        batch.draw(texture, getX(), getY(),getWidth(), getHeight());
     }
 
     @Override
     public void act(float delta){
         super.act(delta);
+        //this.setPosition(this.getX(), this.getY());
     }
 }

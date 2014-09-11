@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -21,6 +22,7 @@ import com.speedColor.game.Case;
 import com.speedColor.game.Config;
 import com.speedColor.game.Cube;
 
+import java.sql.Time;
 import java.util.LinkedList;
 
 public class PlayScreen implements Screen {
@@ -72,21 +74,19 @@ public class PlayScreen implements Screen {
 
         t = new Timer();
 
+        float speedTime = 1f;
         t.scheduleTask(new com.badlogic.gdx.utils.Timer.Task() {
             @Override
             public void run() {
 
-                vitesse -= 0.5f;
+                vitesse -= 1.0f;
                 if(vitesse < 1.5f){
                     vitesse = 1.5f;
                 }
 
                 updateSpeed(vitesse);
-
-
-
             }
-        }, 0, 1);
+        }, 0, speedTime);
 
 
         int w = Gdx.app.getGraphics().getWidth() - margeH;
@@ -175,14 +175,15 @@ public class PlayScreen implements Screen {
         batch.draw(top, margeH,Gdx.app.getGraphics().getHeight()-(top.getHeight()), top.getWidth(),top.getHeight());
         batch.end();
 
+        stage.act(Gdx.graphics.getDeltaTime());
         if (liste.size() >1)
             System.out.println("A :"+(liste.getFirst().getX()-liste.get(1).getX()-liste.get(1).getWidth()));
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
-        update();
-        if (liste.size() >1)
-            System.out.println("B :"+(liste.getFirst().getX()-liste.get(1).getX()-liste.get(1).getWidth()));
 
+        stage.draw();
+
+        //if (liste.size() >1)
+            //System.out.println("B :"+(liste.getFirst().getX()-liste.get(1).getX()-liste.get(1).getWidth()));
+        update();
         batch.begin();
 
 
@@ -248,8 +249,11 @@ public class PlayScreen implements Screen {
 
     }
     public void updateSpeed(float vitesse){
+
         for (Cube c : liste){
             c.action.setDuration(vitesse);
+
+
         }
 
     }
