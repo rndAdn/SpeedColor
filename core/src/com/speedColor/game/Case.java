@@ -35,7 +35,8 @@ public class Case extends Actor{
                 if(PlayScreen.liste.peekFirst().color.equals(((Case)event.getTarget()).color)){
                     Cube b = PlayScreen.liste.peekFirst();
                     PlayScreen.liste.removeFirst();
-                    b.remove();
+                    b.removeCube();
+                    b=null;
                     PlayScreen.caseDetruits++;
                     PlayScreen.vie++;
                     PlayScreen.serie++;

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.speedColor.screen.PlayScreen;
@@ -35,9 +36,9 @@ public class Cube extends Actor {
         pix.setColor(color);
         pix.fillRectangle(1, 1, pix.getWidth()-2, pix.getHeight()-2);
 
-
         this.texture = new Texture(pix);
-
+        pix.dispose();
+        pix=null;
         setX(X);
         setY(Y);
         setBounds(getX(),getY(), texture.getWidth(), texture.getHeight());
@@ -47,6 +48,7 @@ public class Cube extends Actor {
         // Action
         action.setPosition(Gdx.graphics.getWidth(), Y);
         action.setDuration(vitesse);
+        //action.setInterpolation(Interpolation.fade);
 
         this.addAction(action);
     }
@@ -71,4 +73,13 @@ public class Cube extends Actor {
         action.restart();
         action.setTime(time);
     }
+
+    public void removeCube(){
+
+        this.texture.dispose();
+        this.clear();
+        this.remove();
+        color=null;
+    }
+
 }

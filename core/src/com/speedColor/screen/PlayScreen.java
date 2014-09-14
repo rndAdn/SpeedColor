@@ -11,13 +11,9 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Timer;
 import com.speedColor.game.*;
 
@@ -28,26 +24,24 @@ public class PlayScreen implements Screen {
 
     public Stage stage;
 
-    private BitmapFont font;
     private SpriteBatch batch;
     private Case caseColor[];
     public static LinkedList<Cube> liste;
     public Timer t;
     public Texture top;
-    public Texture left;
 
-    public static int vie = 50;
-    public static int caseDetruits = 0;
-    public static boolean lose = false;
-    public static int serie = 0;
-    public static int seriemax = 0;
+    public static int vie;
+    public static int caseDetruits;
+    public static boolean lose;
+    public static int serie;
+    public static int seriemax;
 
 
     public static int margeH =200;
     public static int margeV =Gdx.graphics.getHeight()/5;
     public Game g;
 
-    public static float vitesse = 12f;
+    public static float vitesse;
     float speedTime = 6f;
     float speedUp = 0.7f;
 
@@ -57,8 +51,6 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(Game container) {
 
-
-
         bombe = new Bombe();
         freeze = new Freeze();
         vieAct = new Vie();
@@ -67,7 +59,6 @@ public class PlayScreen implements Screen {
 
         //Stage
         stage = new Stage();
-
         bombe.setTouchable(Touchable.enabled);
         stage.addActor(bombe);
 
@@ -76,10 +67,6 @@ public class PlayScreen implements Screen {
         stage.addActor(vieAct);
         liste = new LinkedList<Cube>();
 
-        //font
-        font = new BitmapFont();
-        font.setColor(Color.BLACK);
-        font.setScale(3,3);
 
         //batch
         batch = new SpriteBatch();
@@ -144,6 +131,7 @@ public class PlayScreen implements Screen {
     public void render(float delta) {
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         batch.begin();
         batch.draw(top, 0,Gdx.app.getGraphics().getHeight()-(top.getHeight()), top.getWidth(),top.getHeight());
         batch.end();
@@ -165,18 +153,31 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-
-
+        this.vie = 50;
+        this.caseDetruits = 0;
+        this.lose = false;
+        this.serie = 0;
+        this.seriemax = 0;
+        this.vitesse = 2f;
+        bombe.nombre=1;
+        freeze.nombre=1;
     }
 
     @Override
     public void hide() {
-
+        for (Cube c : liste){
+            c.removeCube();
+        }
+        liste = null;
+        caseColor = null;
+        batch.dispose();
+        stage.dispose();
+        t.clear();
+        t = null;
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
@@ -187,12 +188,11 @@ public class PlayScreen implements Screen {
     @Override
     public void dispose() {
         for (Cube c : liste){
-            c.remove();
+            c.removeCube();
         }
         liste = null;
         caseColor = null;
         batch.dispose();
-        font.dispose();
         stage.dispose();
         t.clear();
         t = null;
@@ -220,7 +220,7 @@ public class PlayScreen implements Screen {
         if (vie>100) vie = 100;
 
         if (vie<=0){
-            lose = true;
+            //lose = true;
         }
         else if(liste.size()>0){
             if(liste.peekFirst().getX()>=Gdx.graphics.getWidth()){

@@ -15,7 +15,7 @@ import java.util.LinkedList;
 public class Bombe extends Actor{
 
     public Texture texture;
-    public static int nombre = 1;
+    public static int nombre;
 
 
     BitmapFont font;
@@ -66,7 +66,7 @@ public class Bombe extends Actor{
         for (Cube c : PlayScreen.liste){
             PlayScreen.caseDetruits++;
             PlayScreen.vie++;
-            c.remove();
+            c.removeCube();
         }
         PlayScreen.liste = new LinkedList<Cube>();
     }

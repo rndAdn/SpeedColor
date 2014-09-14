@@ -15,7 +15,7 @@ public class Main extends Game {
     public void create() {
         setMenu(new MenuScreen(this));
 
-        this.menu = new MenuScreen(this);
+      this.menu = new MenuScreen(this);
 
         Gdx.input.setCatchBackKey(true);
         setScreen(this.menu);

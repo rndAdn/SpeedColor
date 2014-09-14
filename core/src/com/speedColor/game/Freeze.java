@@ -15,15 +15,10 @@ import java.util.LinkedList;
 public class Freeze extends Actor{
 
     public Texture texture;
-    public static int nombre = 1;
+    public static int nombre;
 
 
     BitmapFont font;
-
-
-
-
-
 
     public Freeze(){
 
